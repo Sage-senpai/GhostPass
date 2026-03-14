@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@theme {
+  --color-asphalt: #302F2C;
+  --color-paper: #EFEDE3;
+  --color-bg-dark: #1E1D1A;
+  --color-card: #3B3936;
+  --color-border: #55524E;
+  --color-highlight: #D6D1BE;
+  --color-positive: #6BCB77;
+  --color-alert: #FF6B6B;
+  --color-card-hover: #46433F;
+
+  --font-display: "Satoshi", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg-dark);
+    color: var(--color-paper);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-highlight);
+    color: var(--color-bg-dark);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(59, 57, 54, 0.6) 0%,
+      rgba(59, 57, 54, 0.3) 100%
+    );
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+
+  .glass-card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .glass-card-hover:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(70, 67, 63, 0.7) 0%,
+      rgba(70, 67, 63, 0.4) 100%
+    );
+    border-color: var(--color-highlight);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    background-color: var(--color-paper);
+    color: var(--color-bg-dark);
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-highlight);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-paper);
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-highlight);
+    background-color: rgba(59, 57, 54, 0.4);
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-paper);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .badge-active {
+    background-color: rgba(107, 203, 119, 0.15);
+    color: var(--color-positive);
+    border: 1px solid rgba(107, 203, 119, 0.3);
+  }
+
+  .badge-alert {
+    background-color: rgba(255, 107, 107, 0.15);
+    color: var(--color-alert);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+
+  .badge-neutral {
+    background-color: rgba(214, 209, 190, 0.1);
+    color: var(--color-highlight);
+    border: 1px solid rgba(214, 209, 190, 0.2);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-highlight);
+}
