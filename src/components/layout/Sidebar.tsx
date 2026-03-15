@@ -59,6 +59,16 @@ const navItems = [
     ),
   },
   {
+    label: "TEE Dashboard",
+    href: "/tee",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 2L3 6v4c0 5.5 3 10.7 7 12 4-1.3 7-6.5 7-12V6l-7-4z" />
+        <path d="M7 10l2.5 2.5L14 8" />
+      </svg>
+    ),
+  },
+  {
     label: "Settings",
     href: "/settings",
     icon: (

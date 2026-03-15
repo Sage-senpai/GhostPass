@@ -3,7 +3,7 @@ export default function DocsPage() {
     {
       title: "What is GhostPass?",
       content:
-        "GhostPass is a TEE-based rental platform for Soulbound Gaming Assets (SBTs). It allows players to lease the privileges attached to their soulbound tokens without transferring ownership. Using Trusted Execution Environments, the protocol issues temporary capability sessions that grant controlled access to elite game features.",
+        "GhostPass is a productionization of the Liquefaction protocol (James Austgen, Cornell/IC3) \u2014 a TEE-based key encumbrance system enabling shared, rented, or pooled asset control. GhostPass applies this primitive to Soulbound Gaming Assets (SBTs), allowing players to lease the privileges attached to their tokens without transferring ownership. Using dstack TEE enclaves, the protocol issues cryptographically time-bound capability sessions that grant controlled access to elite game features.",
     },
     {
       title: "How Does It Work?",
@@ -26,9 +26,9 @@ export default function DocsPage() {
       ],
     },
     {
-      title: "Security Model",
+      title: "Security Model \u2014 Liquefaction Protocol",
       content:
-        "GhostPass uses Trusted Execution Environments (TEEs) to guarantee that leased privileges are cryptographically time-bound. The original owner never transfers their SBT. Instead, a TEE-attested session credential grants temporary access that self-destructs on expiry.",
+        "GhostPass implements the Liquefaction key encumbrance model from IC3 research. The owner\u2019s private key is locked inside a dstack TEE enclave with time-bound restrictions. The TEE generates a capability-limited session key that can only perform pre-approved actions (e.g., enter a raid, access elite matchmaking). The original SBT never leaves the owner\u2019s wallet. When the session expires, the TEE revokes the session key and releases the encumbrance \u2014 no trust in the renter required.",
       features: [
         "Non-transferable \u2014 SBTs remain in the owner\u2019s wallet at all times",
         "Time-bound \u2014 Cryptographic expiry enforced at the hardware level",

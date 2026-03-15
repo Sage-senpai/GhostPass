@@ -129,7 +129,7 @@ export default function LandingPage() {
             {/* Badge */}
             <div className="animate-fade-in inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/40 backdrop-blur-sm text-xs font-medium text-highlight mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-positive animate-pulse" />
-              Built on Solana &middot; Powered by TEE
+              Built on Solana &middot; Liquefaction Protocol (IC3)
             </div>
 
             {/* Title */}
@@ -262,12 +262,15 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="text-xs uppercase tracking-[0.25em] text-positive/70 font-mono mb-3 block">Security</span>
+              <span className="text-xs uppercase tracking-[0.25em] text-positive/70 font-mono mb-3 block">Security &middot; Liquefaction Protocol</span>
               <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-6">
-                TEE-Enforced<br />Trust Model
+                TEE-Enforced<br />Key Encumbrance
               </h2>
+              <p className="text-highlight/60 leading-relaxed mb-4">
+                GhostPass productionizes the <span className="text-paper font-semibold">Liquefaction protocol</span> (James Austgen, Cornell/IC3) &mdash; a TEE-based key encumbrance system. The owner&apos;s private key is locked inside a <span className="text-paper font-semibold">dstack TEE enclave</span> with time-bound restrictions. A capability-limited session key is generated that can only perform pre-approved actions.
+              </p>
               <p className="text-highlight/60 leading-relaxed mb-8">
-                GhostPass uses Trusted Execution Environments to guarantee that leased privileges are cryptographically time-bound. The original owner never transfers their SBT. Instead, a TEE-attested session credential grants temporary access that self-destructs on expiry.
+                The original SBT never leaves the owner&apos;s wallet. When the session expires, the TEE revokes the session key and releases the encumbrance &mdash; no trust in the renter required.
               </p>
 
               <div className="space-y-4">
@@ -415,8 +418,8 @@ export default function LandingPage() {
           <span className="font-display text-lg font-bold tracking-tight text-highlight/40">
             Ghost<span className="text-highlight/60">Pass</span>
           </span>
-          <p className="text-xs text-highlight/30 font-mono">
-            Privilege leasing protocol on Solana &middot; TEE-enforced &middot; Non-custodial
+          <p className="text-xs text-highlight/30 font-mono text-center sm:text-right">
+            Liquefaction Protocol (Austgen, Cornell/IC3) &middot; Solana &middot; dstack TEE &middot; Shape Rotator Hackathon
           </p>
         </div>
       </footer>

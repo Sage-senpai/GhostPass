@@ -9,6 +9,7 @@ import {
 } from "@/lib/mock-data";
 import type { RentalListing, Privilege } from "@/lib/types";
 import { useToast } from "@/components/ui/Toast";
+import RentalFlowModal from "@/components/tee/RentalFlowModal";
 
 const rarityColors: Record<Privilege["rarity"], string> = {
   legendary: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
@@ -28,6 +29,7 @@ type SortOrder = "asc" | "desc" | "none";
 
 export default function MarketplacePage() {
   const { toast } = useToast();
+  const [selectedListing, setSelectedListing] = useState<RentalListing | null>(null);
   const [gameFilter, setGameFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [durationFilter, setDurationFilter] = useState<string>("all");
@@ -228,13 +230,32 @@ export default function MarketplacePage() {
               {/* Rent button */}
               <button
                 className="btn-primary w-full text-center"
-                onClick={() => toast(`Rented ${listing.privilege.name} for ${listing.price} ${listing.currency}`, "success")}
+                onClick={() => setSelectedListing(listing)}
               >
-                Rent Now
+                Rent via TEE
               </button>
             </div>
           ))}
         </div>
+      )}
+      {/* TEE Rental Flow Modal */}
+      {selectedListing && (
+        <RentalFlowModal
+          isOpen={!!selectedListing}
+          onClose={() => {
+            setSelectedListing(null);
+            toast(`Session activated for ${selectedListing.privilege.name}`, "success");
+          }}
+          privilegeName={selectedListing.privilege.name}
+          privilegeId={selectedListing.privilege.id}
+          privilegeType={selectedListing.privilege.type}
+          game={selectedListing.privilege.game}
+          price={selectedListing.price}
+          currency={selectedListing.currency}
+          duration={selectedListing.duration}
+          durationHours={selectedListing.durationHours}
+          lender={selectedListing.lender}
+        />
       )}
     </main>
   );

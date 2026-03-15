@@ -1,9 +1,10 @@
 "use client";
 
 import { useWallet } from "@/context/WalletContext";
-import { useEffect, useCallback } from "react";
+import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useCallback, useMemo } from "react";
 
-const wallets = [
+const walletMeta = [
   {
     name: "Phantom",
     provider: "phantom",
@@ -48,6 +49,18 @@ const wallets = [
 
 export default function WalletConnectModal() {
   const { showConnectModal, setShowConnectModal, connect } = useWallet();
+  const { wallets: solanaWallets } = useSolanaWallet();
+
+  // Check which wallets are actually installed
+  const walletStatus = useMemo(() => {
+    return walletMeta.map((w) => {
+      const adapter = solanaWallets.find(
+        (sw) => sw.adapter.name.toLowerCase() === w.provider.toLowerCase()
+      );
+      const isInstalled = adapter?.readyState === "Installed";
+      return { ...w, isInstalled };
+    });
+  }, [solanaWallets]);
 
   const handleClose = useCallback(() => {
     setShowConnectModal(false);
@@ -102,9 +115,15 @@ export default function WalletConnectModal() {
           privileges.
         </p>
 
+        {/* Network Badge */}
+        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-asphalt/50 border border-border/30">
+          <div className="w-2 h-2 rounded-full bg-amber-400" />
+          <span className="text-xs font-mono text-highlight/60">Solana Devnet</span>
+        </div>
+
         {/* Wallet Options */}
         <div className="flex flex-col gap-2.5">
-          {wallets.map((w) => (
+          {walletStatus.map((w) => (
             <button
               key={w.provider}
               onClick={() => connect(w.provider)}
@@ -115,10 +134,13 @@ export default function WalletConnectModal() {
                 <span className="text-paper text-sm font-semibold block">
                   {w.name}
                 </span>
-                <span className="text-highlight/40 text-xs">
-                  Detected
+                <span className={`text-xs ${w.isInstalled ? "text-positive" : "text-highlight/40"}`}>
+                  {w.isInstalled ? "Installed" : "Demo Mode"}
                 </span>
               </div>
+              {w.isInstalled && (
+                <span className="w-2 h-2 rounded-full bg-positive flex-shrink-0" />
+              )}
               <svg
                 width="16"
                 height="16"
@@ -138,7 +160,7 @@ export default function WalletConnectModal() {
 
         {/* Footer */}
         <p className="text-highlight/30 text-xs text-center mt-5 leading-relaxed">
-          By connecting, you agree to the GhostPass Terms of Service.
+          No wallet? Clicking will connect in demo mode with simulated SOL.
         </p>
       </div>
     </div>
