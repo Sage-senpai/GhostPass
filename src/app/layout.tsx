@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { WalletProvider } from "@/context/WalletContext";
+import { ToastProvider } from "@/components/ui/Toast";
 import WalletConnectModal from "@/components/wallet/WalletConnectModal";
 
 const inter = Inter({
@@ -34,8 +35,10 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased min-h-screen bg-bg-dark text-paper">
         <WalletProvider>
-          {children}
-          <WalletConnectModal />
+          <ToastProvider>
+            {children}
+            <WalletConnectModal />
+          </ToastProvider>
         </WalletProvider>
       </body>
     </html>

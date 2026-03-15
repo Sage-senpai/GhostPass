@@ -1,5 +1,8 @@
+"use client";
+
 import { privileges, activeSessions, userStats } from "@/lib/mock-data";
 import type { Privilege, Session } from "@/lib/types";
+import CountdownTimer from "@/components/ui/CountdownTimer";
 
 const rarityColors: Record<Privilege["rarity"], string> = {
   legendary: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
@@ -14,12 +17,6 @@ const typeColors: Record<Privilege["type"], string> = {
   buff: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
   governance: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
 };
-
-function formatTimeRemaining(ms: number): string {
-  const hours = Math.floor(ms / 3_600_000);
-  const minutes = Math.floor((ms % 3_600_000) / 60_000);
-  return `${hours}h ${minutes}m`;
-}
 
 export default function DashboardPage() {
   const userPrivileges = privileges.slice(0, 3);
@@ -74,7 +71,6 @@ export default function DashboardPage() {
               key={priv.id}
               className="glass-card glass-card-hover flex flex-col gap-4 p-6"
             >
-              {/* Top row: badges */}
               <div className="flex flex-wrap items-center gap-2">
                 <span
                   className={`badge inline-flex items-center rounded-full px-3 py-0.5 text-xs font-medium ${typeColors[priv.type]}`}
@@ -88,7 +84,6 @@ export default function DashboardPage() {
                 </span>
               </div>
 
-              {/* Name & game */}
               <div>
                 <h3 className="font-display text-lg font-semibold text-paper">
                   {priv.name}
@@ -96,7 +91,6 @@ export default function DashboardPage() {
                 <p className="mt-0.5 text-xs text-highlight/50">{priv.game}</p>
               </div>
 
-              {/* Description */}
               <p className="text-sm leading-relaxed text-highlight/70">
                 {priv.description}
               </p>
@@ -120,7 +114,6 @@ export default function DashboardPage() {
                 key={session.id}
                 className="glass-card flex flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center"
               >
-                {/* Left: privilege info */}
                 <div className="flex flex-col gap-1">
                   <h3 className="font-display text-base font-semibold text-paper">
                     {session.privilege.name}
@@ -130,7 +123,6 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                {/* Center: renter */}
                 <div className="flex flex-col items-start gap-1 sm:items-center">
                   <span className="text-[11px] uppercase tracking-wider text-highlight/40">
                     {session.lender === "You" ? "Rented to" : "Rented from"}
@@ -140,15 +132,15 @@ export default function DashboardPage() {
                   </span>
                 </div>
 
-                {/* Right: time + price */}
                 <div className="flex items-center gap-5">
                   <div className="flex flex-col items-end gap-0.5">
                     <span className="text-[11px] uppercase tracking-wider text-highlight/40">
                       Remaining
                     </span>
-                    <span className="font-mono text-sm font-semibold text-positive">
-                      {formatTimeRemaining(session.timeRemainingMs)}
-                    </span>
+                    <CountdownTimer
+                      initialMs={session.timeRemainingMs}
+                      className="text-sm"
+                    />
                   </div>
                   <div className="flex flex-col items-end gap-0.5">
                     <span className="text-[11px] uppercase tracking-wider text-highlight/40">

@@ -58,6 +58,28 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="10" cy="10" r="3" />
+        <path d="M10 1v2m0 14v2M3.5 3.5l1.4 1.4m10.2 10.2l1.4 1.4M1 10h2m14 0h2M3.5 16.5l1.4-1.4m10.2-10.2l1.4-1.4" />
+      </svg>
+    ),
+  },
+  {
+    label: "Docs",
+    href: "/docs",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 2h9l5 5v11a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" />
+        <polyline points="13,2 13,7 18,7" />
+        <line x1="6" y1="11" x2="14" y2="11" />
+        <line x1="6" y1="15" x2="11" y2="15" />
+      </svg>
+    ),
+  },
 ];
 
 export default function Sidebar() {

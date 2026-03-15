@@ -1,14 +1,12 @@
-import { activeSessions } from "@/lib/mock-data";
+"use client";
 
-function formatTimeRemaining(ms: number): string {
-  const totalMinutes = Math.floor(ms / 60_000);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  if (hours > 0) return `${hours}h ${minutes}m`;
-  return `${minutes}m`;
-}
+import { activeSessions } from "@/lib/mock-data";
+import CountdownTimer from "@/components/ui/CountdownTimer";
+import { useToast } from "@/components/ui/Toast";
 
 export default function SessionsPage() {
+  const { toast } = useToast();
+
   return (
     <main className="min-h-screen bg-bg-dark px-6 py-12 md:px-16">
       <h1 className="font-display text-3xl font-bold text-paper mb-8">
@@ -53,9 +51,11 @@ export default function SessionsPage() {
                 <span className="block text-xs uppercase tracking-wider text-highlight/50 font-mono mb-1">
                   Time Remaining
                 </span>
-                <span className="text-paper font-mono text-base font-semibold">
-                  {formatTimeRemaining(session.timeRemainingMs)}
-                </span>
+                <CountdownTimer
+                  initialMs={session.timeRemainingMs}
+                  className="text-base"
+                  onExpire={() => toast(`Session for ${session.privilege.name} has expired`, "error")}
+                />
               </div>
               <div>
                 <span className="block text-xs uppercase tracking-wider text-highlight/50 font-mono mb-1">
@@ -77,10 +77,16 @@ export default function SessionsPage() {
 
             {/* Actions */}
             <div className="flex gap-3 mt-auto pt-2 border-t border-border">
-              <button className="btn-secondary flex-1 text-sm">
+              <button
+                className="btn-secondary flex-1 text-sm"
+                onClick={() => toast(`Session for ${session.privilege.name} ended`, "info")}
+              >
                 End Session
               </button>
-              <button className="btn-primary flex-1 text-sm">
+              <button
+                className="btn-primary flex-1 text-sm"
+                onClick={() => toast(`Rental extended for ${session.privilege.name}`, "success")}
+              >
                 Extend Rental
               </button>
             </div>

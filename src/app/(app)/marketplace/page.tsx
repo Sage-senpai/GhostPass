@@ -8,6 +8,7 @@ import {
   durations,
 } from "@/lib/mock-data";
 import type { RentalListing, Privilege } from "@/lib/types";
+import { useToast } from "@/components/ui/Toast";
 
 const rarityColors: Record<Privilege["rarity"], string> = {
   legendary: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
@@ -26,6 +27,7 @@ const typeColors: Record<Privilege["type"], string> = {
 type SortOrder = "asc" | "desc" | "none";
 
 export default function MarketplacePage() {
+  const { toast } = useToast();
   const [gameFilter, setGameFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [durationFilter, setDurationFilter] = useState<string>("all");
@@ -224,7 +226,10 @@ export default function MarketplacePage() {
               </div>
 
               {/* Rent button */}
-              <button className="btn-primary w-full text-center">
+              <button
+                className="btn-primary w-full text-center"
+                onClick={() => toast(`Rented ${listing.privilege.name} for ${listing.price} ${listing.currency}`, "success")}
+              >
                 Rent Now
               </button>
             </div>
