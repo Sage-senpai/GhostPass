@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useWallet } from "@/context/WalletContext";
 
@@ -68,11 +69,13 @@ export default function Sidebar() {
       {/* Brand */}
       <div className="px-6 pt-7 pb-6">
         <Link href="/dashboard" className="flex items-center gap-2.5 no-underline">
-          <div className="w-9 h-9 rounded-xl bg-paper flex items-center justify-center">
-            <span className="text-bg-dark font-bold text-sm font-[family-name:var(--font-display)]">
-              GP
-            </span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="GhostPass"
+            width={36}
+            height={36}
+            className="rounded-xl"
+          />
           <div>
             <h1 className="text-paper text-lg font-bold tracking-tight leading-none font-[family-name:var(--font-display)]">
               GhostPass

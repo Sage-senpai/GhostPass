@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { rentalListings } from "@/lib/mock-data";
 import type { RentalListing } from "@/lib/types";
 
@@ -84,9 +85,12 @@ export default function LandingPage() {
       {/* ─── NAV ─── */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 backdrop-blur-xl bg-bg-dark/70">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-display text-xl font-bold tracking-tight text-paper">
-            Ghost<span className="text-highlight">Pass</span>
-          </span>
+          <Link href="/" className="flex items-center gap-2 no-underline">
+            <Image src="/logo.png" alt="GhostPass" width={32} height={32} className="rounded-lg" />
+            <span className="font-display text-xl font-bold tracking-tight text-paper">
+              Ghost<span className="text-highlight">Pass</span>
+            </span>
+          </Link>
           <div className="flex items-center gap-6">
             <Link href="#how-it-works" className="text-sm text-highlight/70 hover:text-paper transition-colors hidden sm:block">
               How It Works
@@ -105,99 +109,96 @@ export default function LandingPage() {
       </nav>
 
       {/* ─── HERO ─── */}
-      <section className="relative min-h-screen flex items-center justify-center pt-16">
-        {/* Background ambient glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-purple-500/10 animate-pulse-glow" />
-          <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-amber-500/8 animate-pulse-glow" style={{ animationDelay: "2s" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-highlight/[0.03] animate-pulse-glow" style={{ animationDelay: "1s" }} />
-        </div>
+      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+        {/* Full-screen hero background image */}
+        <Image
+          src="/hero.png"
+          alt="GhostPass - TEE-Secure Digital Asset Exchange"
+          fill
+          className="object-cover object-right"
+          priority
+        />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          {/* Badge */}
-          <div className="animate-fade-in inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/40 text-xs font-medium text-highlight mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-positive animate-pulse" />
-            Built on Solana &middot; Powered by TEE
-          </div>
+        {/* Dark overlay gradient — heavier on the left for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-dark via-bg-dark/85 to-bg-dark/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-transparent to-bg-dark/60" />
 
-          {/* Title */}
-          <h1 className="animate-fade-in font-display text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] mb-6">
-            Ghost<span className="text-highlight">Pass</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="animate-fade-in-delay font-display text-xl sm:text-2xl text-highlight/80 max-w-2xl mx-auto leading-relaxed mb-12">
-            Lease Elite Gaming Privileges Without Transferring Ownership
-          </p>
-
-          {/* ─── ANIMATED FLOW VISUALIZATION ─── */}
-          <div className="animate-fade-in-delay-2 flex items-center justify-center gap-3 sm:gap-5 mb-14 flex-wrap">
-            {/* Node 1: Player Achievement */}
-            <div className="glass-card animate-node-pulse flex flex-col items-center gap-2 px-5 py-4 sm:px-7 sm:py-5 min-w-[140px]">
-              <div className="text-2xl sm:text-3xl">{"\uD83C\uDFC6"}</div>
-              <span className="text-xs sm:text-sm font-medium text-paper">Player Achievement</span>
-              <span className="text-[10px] text-highlight/50 font-mono">SBT / NFT</span>
+        {/* Content overlay */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="max-w-xl">
+            {/* Badge */}
+            <div className="animate-fade-in inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/40 backdrop-blur-sm text-xs font-medium text-highlight mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-positive animate-pulse" />
+              Built on Solana &middot; Powered by TEE
             </div>
 
-            {/* Arrow 1 */}
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 rounded-full bg-highlight/60 animate-flow" />
-                <span className="w-2 h-2 rounded-full bg-highlight/60 animate-flow-delay" />
-                <span className="w-2 h-2 rounded-full bg-highlight/60 animate-flow" style={{ animationDelay: "1.2s" }} />
+            {/* Title */}
+            <h1 className="animate-fade-in font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[0.9] mb-6">
+              Ghost<span className="text-highlight">Pass</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="animate-fade-in-delay font-display text-lg sm:text-xl lg:text-2xl text-highlight/80 max-w-xl leading-relaxed mb-10">
+              Lease Elite Gaming Privileges Without Transferring Ownership
+            </p>
+
+            {/* ─── ANIMATED FLOW VISUALIZATION ─── */}
+            <div className="animate-fade-in-delay-2 flex items-center gap-3 sm:gap-4 mb-10 flex-wrap">
+              {/* Node 1 */}
+              <div className="glass-card animate-node-pulse flex flex-col items-center gap-1.5 px-4 py-3 min-w-[110px] backdrop-blur-md">
+                <div className="text-xl">{"\uD83C\uDFC6"}</div>
+                <span className="text-[11px] font-medium text-paper">Achievement</span>
+                <span className="text-[9px] text-highlight/50 font-mono">SBT</span>
               </div>
-              <svg width="80" height="8" className="hidden sm:block">
-                <line x1="0" y1="4" x2="80" y2="4" stroke="var(--color-border)" strokeWidth="2" strokeDasharray="6 4" style={{ animation: "dash-flow 1s linear infinite" }} />
-              </svg>
-            </div>
 
-            {/* Node 2: GhostPass Protocol */}
-            <div className="glass-card animate-node-pulse-delay flex flex-col items-center gap-2 px-5 py-4 sm:px-7 sm:py-5 min-w-[160px] border-highlight/40 relative overflow-hidden">
-              <div className="absolute inset-0 animate-shimmer" />
-              <div className="relative text-2xl sm:text-3xl">{"\uD83D\uDC7B"}</div>
-              <span className="relative text-xs sm:text-sm font-bold text-paper">GhostPass Protocol</span>
-              <span className="relative text-[10px] text-positive font-mono">TEE Secured</span>
-            </div>
-
-            {/* Arrow 2 */}
-            <div className="flex flex-col items-center gap-1">
+              {/* Arrow 1 */}
               <div className="flex gap-1">
-                <span className="w-2 h-2 rounded-full bg-positive/60 animate-flow" />
-                <span className="w-2 h-2 rounded-full bg-positive/60 animate-flow-delay" />
-                <span className="w-2 h-2 rounded-full bg-positive/60 animate-flow" style={{ animationDelay: "1.2s" }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-highlight/60 animate-flow" />
+                <span className="w-1.5 h-1.5 rounded-full bg-highlight/60 animate-flow-delay" />
               </div>
-              <svg width="80" height="8" className="hidden sm:block">
-                <line x1="0" y1="4" x2="80" y2="4" stroke="var(--color-positive)" strokeWidth="2" strokeDasharray="6 4" style={{ animation: "dash-flow 1s linear infinite" }} />
-              </svg>
+
+              {/* Node 2 */}
+              <div className="glass-card animate-node-pulse-delay flex flex-col items-center gap-1.5 px-4 py-3 min-w-[120px] border-highlight/40 relative overflow-hidden backdrop-blur-md">
+                <div className="absolute inset-0 animate-shimmer" />
+                <div className="relative text-xl">{"\uD83D\uDC7B"}</div>
+                <span className="relative text-[11px] font-bold text-paper">GhostPass</span>
+                <span className="relative text-[9px] text-positive font-mono">TEE</span>
+              </div>
+
+              {/* Arrow 2 */}
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-positive/60 animate-flow" />
+                <span className="w-1.5 h-1.5 rounded-full bg-positive/60 animate-flow-delay" />
+              </div>
+
+              {/* Node 3 */}
+              <div className="glass-card animate-node-pulse-delay-2 flex flex-col items-center gap-1.5 px-4 py-3 min-w-[110px] backdrop-blur-md">
+                <div className="text-xl">{"\uD83C\uDFAE"}</div>
+                <span className="text-[11px] font-medium text-paper">Access</span>
+                <span className="text-[9px] text-highlight/50 font-mono">Time-Bound</span>
+              </div>
             </div>
 
-            {/* Node 3: Temporary Access */}
-            <div className="glass-card animate-node-pulse-delay-2 flex flex-col items-center gap-2 px-5 py-4 sm:px-7 sm:py-5 min-w-[140px]">
-              <div className="text-2xl sm:text-3xl">{"\uD83C\uDFAE"}</div>
-              <span className="text-xs sm:text-sm font-medium text-paper">Temporary Access</span>
-              <span className="text-[10px] text-highlight/50 font-mono">Time-Bound</span>
+            {/* CTA */}
+            <div className="animate-fade-in-delay-2 flex items-center gap-4">
+              <Link
+                href="/dashboard"
+                className="btn-primary text-base !py-3.5 !px-8 font-bold inline-flex items-center gap-2"
+              >
+                Launch App
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-1">
+                  <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+              <Link href="#how-it-works" className="btn-secondary text-base !py-3.5 !px-8 inline-flex items-center gap-2 backdrop-blur-sm">
+                Learn More
+              </Link>
             </div>
-          </div>
-
-          {/* CTA */}
-          <div className="animate-fade-in-delay-2 flex items-center justify-center gap-4">
-            <Link
-              href="/dashboard"
-              className="btn-primary text-base !py-3.5 !px-8 font-bold inline-flex items-center gap-2"
-            >
-              Launch App
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-1">
-                <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-            <Link href="#how-it-works" className="btn-secondary text-base !py-3.5 !px-8 inline-flex items-center gap-2">
-              Learn More
-            </Link>
           </div>
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-highlight/30">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-highlight/30 z-10">
           <span className="text-[10px] uppercase tracking-widest">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-highlight/30 to-transparent" />
         </div>
