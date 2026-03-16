@@ -3,11 +3,12 @@
 import { useWallet } from "@/context/WalletContext";
 import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useCallback, useMemo } from "react";
+import Image from "next/image";
 
-const walletMeta = [
+// Featured wallets with custom SVG icons (shown first, always visible)
+const featuredWallets = [
   {
     name: "Phantom",
-    provider: "phantom",
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
         <rect width="28" height="28" rx="8" fill="#AB9FF2" />
@@ -21,20 +22,7 @@ const walletMeta = [
     ),
   },
   {
-    name: "Backpack",
-    provider: "backpack",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect width="28" height="28" rx="8" fill="#E33E3F" />
-        <rect x="8" y="7" width="12" height="14" rx="3" stroke="#fff" strokeWidth="1.8" fill="none" />
-        <path d="M11 7V5.5a3 3 0 0 1 6 0V7" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-        <rect x="10.5" y="12" width="7" height="4" rx="1" fill="#fff" />
-      </svg>
-    ),
-  },
-  {
     name: "Solflare",
-    provider: "solflare",
     icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
         <rect width="28" height="28" rx="8" fill="#FC7227" />
@@ -45,22 +33,82 @@ const walletMeta = [
       </svg>
     ),
   },
+  {
+    name: "Coinbase Wallet",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#0052FF" />
+        <rect x="8" y="8" width="12" height="12" rx="3" fill="#fff" />
+        <rect x="11" y="11" width="6" height="6" rx="1" fill="#0052FF" />
+      </svg>
+    ),
+  },
+  {
+    name: "Trust",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#0500FF" />
+        <path d="M14 5L7 8.5v5.5c0 5 3 9.5 7 11 4-1.5 7-6 7-11V8.5L14 5z" stroke="#fff" strokeWidth="1.5" fill="none" />
+        <path d="M11.5 14l2 2 3.5-4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    name: "Ledger",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#000" />
+        <rect x="7" y="7" width="8" height="14" rx="1" stroke="#fff" strokeWidth="1.2" fill="none" />
+        <rect x="17" y="14" width="4" height="7" rx="1" stroke="#fff" strokeWidth="1.2" fill="none" />
+        <rect x="9" y="18" width="4" height="1.5" rx="0.5" fill="#fff" />
+      </svg>
+    ),
+  },
+  {
+    name: "Nightly",
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#1A1A2E" />
+        <path d="M18 10a6 6 0 11-8 8 5 5 0 008-8z" fill="#E2C044" />
+        <circle cx="19" cy="8" r="1" fill="#E2C044" />
+        <circle cx="21" cy="11" r="0.7" fill="#E2C044" />
+      </svg>
+    ),
+  },
 ];
 
 export default function WalletConnectModal() {
   const { showConnectModal, setShowConnectModal, connect } = useWallet();
   const { wallets: solanaWallets } = useSolanaWallet();
 
-  // Check which wallets are actually installed
-  const walletStatus = useMemo(() => {
-    return walletMeta.map((w) => {
+  // Build wallet list with real detection status
+  const walletList = useMemo(() => {
+    return featuredWallets.map((fw) => {
       const adapter = solanaWallets.find(
-        (sw) => sw.adapter.name.toLowerCase() === w.provider.toLowerCase()
+        (sw) => sw.adapter.name.toLowerCase() === fw.name.toLowerCase()
       );
       const isInstalled = adapter?.readyState === "Installed";
-      return { ...w, isInstalled };
+      const iconUrl = adapter?.adapter.icon;
+      return {
+        name: fw.name,
+        adapterName: adapter?.adapter.name || fw.name,
+        icon: fw.icon,
+        iconUrl,
+        isInstalled,
+      };
     });
   }, [solanaWallets]);
+
+  // Sort: installed wallets first
+  const sortedWallets = useMemo(() => {
+    return [...walletList].sort((a, b) => {
+      if (a.isInstalled && !b.isInstalled) return -1;
+      if (!a.isInstalled && b.isInstalled) return 1;
+      return 0;
+    });
+  }, [walletList]);
+
+  const installedCount = sortedWallets.filter((w) => w.isInstalled).length;
 
   const handleClose = useCallback(() => {
     setShowConnectModal(false);
@@ -94,7 +142,7 @@ export default function WalletConnectModal() {
       {/* Modal */}
       <div className="glass-card relative w-full max-w-sm p-6 animate-in">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-5">
           <h2 className="text-paper text-lg font-semibold font-[family-name:var(--font-display)]">
             Connect Wallet
           </h2>
@@ -110,41 +158,64 @@ export default function WalletConnectModal() {
         </div>
 
         {/* Description */}
-        <p className="text-highlight/50 text-sm mb-5 leading-relaxed">
-          Select a wallet to connect to GhostPass and start leasing elite gaming
-          privileges.
+        <p className="text-highlight/50 text-sm mb-4 leading-relaxed">
+          Connect a Solana wallet to start leasing elite gaming privileges.
         </p>
 
-        {/* Network Badge */}
-        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-asphalt/50 border border-border/30">
-          <div className="w-2 h-2 rounded-full bg-amber-400" />
-          <span className="text-xs font-mono text-highlight/60">Solana Devnet</span>
+        {/* Network + Detection Badge */}
+        <div className="flex items-center justify-between mb-4 px-3 py-2 rounded-lg bg-asphalt/50 border border-border/30">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-amber-400" />
+            <span className="text-xs font-mono text-highlight/60">Solana Devnet</span>
+          </div>
+          {installedCount > 0 && (
+            <span className="text-xs text-positive font-mono">
+              {installedCount} detected
+            </span>
+          )}
         </div>
 
         {/* Wallet Options */}
-        <div className="flex flex-col gap-2.5">
-          {walletStatus.map((w) => (
+        <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto custom-scrollbar pr-1">
+          {sortedWallets.map((w) => (
             <button
-              key={w.provider}
-              onClick={() => connect(w.provider)}
-              className="glass-card glass-card-hover flex items-center gap-4 px-4 py-3.5 w-full text-left cursor-pointer border-border/50 bg-transparent"
+              key={w.name}
+              onClick={() => connect(w.adapterName)}
+              className="glass-card glass-card-hover flex items-center gap-3.5 px-4 py-3 w-full text-left cursor-pointer border-border/50 bg-transparent"
             >
-              <span className="flex-shrink-0">{w.icon}</span>
+              <span className="flex-shrink-0 relative">
+                {w.isInstalled && w.iconUrl ? (
+                  <Image
+                    src={w.iconUrl}
+                    alt={w.name}
+                    width={28}
+                    height={28}
+                    className="rounded-lg"
+                    unoptimized
+                  />
+                ) : (
+                  w.icon
+                )}
+              </span>
               <div className="flex-1 min-w-0">
                 <span className="text-paper text-sm font-semibold block">
                   {w.name}
                 </span>
-                <span className={`text-xs ${w.isInstalled ? "text-positive" : "text-highlight/40"}`}>
-                  {w.isInstalled ? "Installed" : "Demo Mode"}
+                <span
+                  className={`text-[11px] ${
+                    w.isInstalled ? "text-positive" : "text-highlight/40"
+                  }`}
+                >
+                  {w.isInstalled ? "Installed — click to connect" : "Demo mode"}
                 </span>
               </div>
               {w.isInstalled && (
-                <span className="w-2 h-2 rounded-full bg-positive flex-shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-positive flex-shrink-0 animate-pulse" />
               )}
               <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -152,15 +223,15 @@ export default function WalletConnectModal() {
                 strokeLinejoin="round"
                 className="text-highlight/30 flex-shrink-0"
               >
-                <path d="M6 3l5 5-5 5" />
+                <path d="M5 2l5 5-5 5" />
               </svg>
             </button>
           ))}
         </div>
 
         {/* Footer */}
-        <p className="text-highlight/30 text-xs text-center mt-5 leading-relaxed">
-          No wallet? Clicking will connect in demo mode with simulated SOL.
+        <p className="text-highlight/30 text-xs text-center mt-4 leading-relaxed">
+          No wallet installed? Click any option to explore in demo mode.
         </p>
       </div>
     </div>

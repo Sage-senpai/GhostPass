@@ -15,6 +15,8 @@ import type { WalletState } from "@/lib/types";
 
 interface WalletContextType {
   wallet: WalletState;
+  fullAddress: string | null;
+  walletName: string | null;
   connect: (provider: string) => void;
   disconnect: () => void;
   showConnectModal: boolean;
@@ -81,6 +83,18 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
     : mockWallet;
 
+  const fullAddress = isRealWallet
+    ? solanaWallet.publicKey!.toBase58()
+    : mockWallet.connected
+      ? "Gh0sTPassDem0Wa11etAddr3ssF0rHackath0nMVPx7Kp"
+      : null;
+
+  const walletName = isRealWallet
+    ? solanaWallet.wallet?.adapter.name ?? null
+    : mockWallet.connected
+      ? "Demo Wallet"
+      : null;
+
   const connect = useCallback(
     (provider: string) => {
       // Try to select the real wallet adapter first
@@ -134,6 +148,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     <WalletContext.Provider
       value={{
         wallet,
+        fullAddress,
+        walletName,
         connect,
         disconnect,
         showConnectModal,

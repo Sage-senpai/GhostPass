@@ -3,6 +3,7 @@
 import { privileges, activeSessions, userStats } from "@/lib/mock-data";
 import type { Privilege, Session } from "@/lib/types";
 import CountdownTimer from "@/components/ui/CountdownTimer";
+import { useWallet } from "@/context/WalletContext";
 
 const rarityColors: Record<Privilege["rarity"], string> = {
   legendary: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
@@ -19,9 +20,11 @@ const typeColors: Record<Privilege["type"], string> = {
 };
 
 export default function DashboardPage() {
+  const { wallet, walletName, isRealWallet } = useWallet();
   const userPrivileges = privileges.slice(0, 3);
 
   const stats = [
+    { label: "Wallet Balance", value: `${wallet.balance} SOL`, highlight: true },
     { label: "Total Privileges", value: userStats.totalPrivileges },
     { label: "Active Rentals", value: userStats.activeRentals },
     {
@@ -34,16 +37,25 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-bg-dark px-6 py-10 md:px-12 lg:px-20">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="font-display text-3xl font-bold text-paper md:text-4xl">
-          Dashboard
-        </h1>
-        <p className="mt-2 text-sm text-highlight/60">
-          Manage your privileges, track rentals, and monitor earnings.
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="font-display text-3xl font-bold text-paper md:text-4xl">
+            Dashboard
+          </h1>
+          {wallet.connected && (
+            <span className={`badge text-[10px] ${isRealWallet ? "badge-active" : "bg-amber-400/10 text-amber-400 border border-amber-400/30"}`}>
+              {isRealWallet ? walletName : "Demo Mode"}
+            </span>
+          )}
+        </div>
+        <p className="mt-1 text-sm text-highlight/60">
+          {wallet.connected
+            ? <>Wallet <span className="font-mono text-paper">{wallet.address}</span> &middot; Manage your privileges, track rentals, and monitor earnings.</>
+            : "Connect a wallet to get started."}
         </p>
       </div>
 
       {/* Stats Overview */}
-      <section className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <section className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <div
             key={stat.label}

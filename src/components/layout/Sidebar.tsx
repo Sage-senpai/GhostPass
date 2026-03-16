@@ -94,7 +94,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { wallet, disconnect, setShowConnectModal } = useWallet();
+  const { wallet, walletName, disconnect, setShowConnectModal, isRealWallet } = useWallet();
 
   return (
     <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 w-[260px] glass-card rounded-none border-l-0 border-t-0 border-b-0 z-40">
@@ -163,11 +163,16 @@ export default function Sidebar() {
       <div className="p-4">
         {wallet.connected ? (
           <div className="glass-card rounded-xl p-3.5">
-            <div className="flex items-center gap-2.5 mb-2.5">
-              <div className="w-2 h-2 rounded-full bg-positive" />
-              <span className="text-xs text-highlight/60 font-medium">
-                Connected
-              </span>
+            <div className="flex items-center justify-between mb-2.5">
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${isRealWallet ? "bg-positive" : "bg-amber-400"}`} />
+                <span className="text-xs text-highlight/60 font-medium">
+                  {walletName || "Connected"}
+                </span>
+              </div>
+              {!isRealWallet && (
+                <span className="text-[9px] font-mono text-amber-400/70 uppercase tracking-wider">Demo</span>
+              )}
             </div>
             <p className="text-paper text-sm font-mono font-medium truncate mb-1">
               {wallet.address}

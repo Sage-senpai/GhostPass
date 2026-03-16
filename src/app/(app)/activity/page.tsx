@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { activityHistory } from "@/lib/mock-data";
+
+export const metadata: Metadata = {
+  title: "Activity",
+};
 
 function formatTimestamp(iso: string): string {
   const date = new Date(iso);

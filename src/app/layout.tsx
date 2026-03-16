@@ -16,11 +16,44 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GhostPass",
-  description: "Lease Elite Gaming Privileges Without Transferring Ownership",
+  title: {
+    default: "GhostPass — Lease Elite Gaming Privileges",
+    template: "%s | GhostPass",
+  },
+  description:
+    "TEE-enforced rental marketplace for Soulbound Token utilities on Solana. Lease gaming privileges without transferring ownership — powered by the Liquefaction protocol (IC3).",
+  keywords: [
+    "GhostPass",
+    "SBT",
+    "Soulbound Token",
+    "TEE",
+    "Liquefaction",
+    "Solana",
+    "gaming privileges",
+    "key encumbrance",
+    "dstack",
+    "IC3",
+    "rental marketplace",
+  ],
+  authors: [{ name: "Anyadike Divine" }],
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
+  },
+  openGraph: {
+    title: "GhostPass — Lease Elite Gaming Privileges",
+    description:
+      "TEE-enforced utility leasing for Soulbound Tokens on Solana. No ownership transfer. Powered by the Liquefaction protocol.",
+    siteName: "GhostPass",
+    type: "website",
+    images: [{ url: "/hero.png", width: 1200, height: 630, alt: "GhostPass" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GhostPass — Lease Elite Gaming Privileges",
+    description:
+      "TEE-enforced utility leasing for Soulbound Tokens on Solana. Powered by Liquefaction (IC3).",
+    images: ["/hero.png"],
   },
 };
 

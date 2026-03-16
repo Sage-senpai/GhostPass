@@ -4,7 +4,7 @@ import { useWallet } from "@/context/WalletContext";
 import { useToast } from "@/components/ui/Toast";
 
 export default function SettingsPage() {
-  const { wallet } = useWallet();
+  const { wallet, fullAddress, walletName, isRealWallet } = useWallet();
   const { toast } = useToast();
 
   return (
@@ -30,17 +30,34 @@ export default function SettingsPage() {
                 Wallet Address
               </label>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-sm text-paper bg-asphalt px-4 py-2.5 rounded-xl flex-1 border border-border">
-                  {wallet.connected ? wallet.address : "Not connected"}
+                <span className="font-mono text-sm text-paper bg-asphalt px-4 py-2.5 rounded-xl flex-1 border border-border truncate">
+                  {wallet.connected ? (fullAddress || wallet.address) : "Not connected"}
                 </span>
                 {wallet.connected && (
                   <button
                     className="btn-secondary text-sm !py-2.5"
-                    onClick={() => toast("Address copied to clipboard", "success")}
+                    onClick={() => {
+                      if (fullAddress) navigator.clipboard.writeText(fullAddress);
+                      toast("Address copied to clipboard", "success");
+                    }}
                   >
                     Copy
                   </button>
                 )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-highlight/50 font-mono mb-1.5">
+                Wallet Provider
+              </label>
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-sm text-paper bg-asphalt px-4 py-2.5 rounded-xl flex-1 border border-border">
+                  {walletName || "Not connected"}
+                </span>
+                <span className={`badge text-[10px] ${isRealWallet ? "badge-active" : "bg-amber-400/10 text-amber-400 border border-amber-400/30"}`}>
+                  {isRealWallet ? "Live" : wallet.connected ? "Demo" : "—"}
+                </span>
               </div>
             </div>
 
