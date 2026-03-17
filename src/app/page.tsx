@@ -412,6 +412,105 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── BEYOND GAMING ─── */}
+      <section className="relative py-32 px-6 border-t border-border/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-xs uppercase tracking-[0.25em] text-highlight/50 font-mono mb-3 block">Beyond Gaming</span>
+            <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+              One Primitive, Many Use Cases
+            </h2>
+            <p className="text-highlight/60 max-w-2xl mx-auto">
+              TEE key encumbrance isn&apos;t just for games. The same Liquefaction primitive enables trustless credential sharing for researchers, builders, and teams.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              {
+                icon: "\uD83C\uDFAE",
+                title: "Gaming Privileges",
+                desc: "Rent rank access, beta passes, and rare buffs from elite players — SBT stays with the owner.",
+                color: "text-purple-400",
+                bg: "bg-purple-500/10",
+                border: "border-purple-500/20",
+              },
+              {
+                icon: "\uD83D\uDD11",
+                title: "API Key Sharing",
+                desc: "Share premium API keys with collaborators. TEE enforces rate limits and auto-expiry — secret never exposed.",
+                color: "text-sky-400",
+                bg: "bg-sky-500/10",
+                border: "border-sky-500/20",
+              },
+              {
+                icon: "\u2601\uFE0F",
+                title: "Cloud Credentials",
+                desc: "Delegate cloud resource access across teams with time-bound TEE-enforced sessions. No password sharing.",
+                color: "text-amber-400",
+                bg: "bg-amber-500/10",
+                border: "border-amber-500/20",
+              },
+              {
+                icon: "\uD83D\uDDC3\uFE0F",
+                title: "Dataset Access",
+                desc: "Grant researchers temporary access to proprietary datasets via encumbered keys. Revokes automatically.",
+                color: "text-positive",
+                bg: "bg-positive/10",
+                border: "border-positive/20",
+              },
+            ].map((item) => (
+              <div key={item.title} className={`glass-card p-6 ${item.border} border`}>
+                <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center text-xl mb-4`}>
+                  {item.icon}
+                </div>
+                <h3 className={`font-display text-base font-bold mb-2 ${item.color}`}>{item.title}</h3>
+                <p className="text-sm text-highlight/60 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-xs text-highlight/40 font-mono">
+              Powered by Liquefaction key encumbrance (Austgen, Cornell/IC3) &middot; Conditional Recall credential delegation &middot; dstack TEE infrastructure
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── RESEARCH ─── */}
+      <section className="relative py-24 px-6 border-t border-border/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-xs uppercase tracking-[0.25em] text-highlight/50 font-mono mb-3 block">Research Foundation</span>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-8">
+            Built on IC3 Research
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div className="glass-card p-5 text-left">
+              <h3 className="font-display font-bold text-paper text-sm mb-2">Liquefaction</h3>
+              <p className="text-xs text-highlight/50 leading-relaxed mb-3">
+                TEE-based key encumbrance enabling shared, rented, or pooled asset control without transferring ownership.
+              </p>
+              <span className="text-[10px] font-mono text-highlight/30">James Austgen &middot; Cornell/IC3</span>
+            </div>
+            <div className="glass-card p-5 text-left">
+              <h3 className="font-display font-bold text-paper text-sm mb-2">Conditional Recall</h3>
+              <p className="text-xs text-highlight/50 leading-relaxed mb-3">
+                Brokered credential delegation via TEE with automatic recall — the foundation for session key revocation.
+              </p>
+              <span className="text-[10px] font-mono text-highlight/30">Xyn Sun &middot; Teleport/Flashbots</span>
+            </div>
+            <div className="glass-card p-5 text-left">
+              <h3 className="font-display font-bold text-paper text-sm mb-2">dstack</h3>
+              <p className="text-xs text-highlight/50 leading-relaxed mb-3">
+                Decentralized TEE cloud infrastructure — the shared execution layer for privacy-preserving applications.
+              </p>
+              <span className="text-[10px] font-mono text-highlight/30">Shared TEE Infrastructure</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── FOOTER ─── */}
       <footer className="border-t border-border/30 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">

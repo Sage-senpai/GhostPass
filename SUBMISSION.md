@@ -4,47 +4,71 @@ Copy each section below into the corresponding field on the submission form.
 
 ---
 
-## Submission Details (copy this)
+## Submission Details (copy this into "Provide a detailed explanation of your submission")
 
 GhostPass is a TEE-enforced utility leasing protocol for Soulbound Tokens (SBTs) on Solana, built on the Liquefaction protocol (Austgen et al., Cornell/IC3).
 
 ### The Problem
-Soulbound Tokens carry real utility — rank access, game privileges, governance rights — but their non-transferability creates a dead market. Owners can't monetize them, and renters can't access elite privileges without years of grinding. There is no existing mechanism that respects the soul-bound constraint while still enabling utility sharing.
+
+Soulbound Tokens carry real utility — rank access, game privileges, governance rights — but their non-transferability creates a dead market. Owners can't monetize achievements they underutilize. Renters can't access elite privileges without years of grinding. There is no existing protocol that respects the soul-bound constraint while enabling utility sharing.
 
 ### The Solution
-GhostPass productionizes the Liquefaction key encumbrance primitive. When a lender lists a privilege, their private key is encumbered inside a dstack TEE enclave with time-bound, capability-limited restrictions. The enclave generates a verifiable TEE attestation (MRENCLAVE + MRSIGNER measurements) proving the execution environment is trustworthy. A scoped session key is then issued to the renter — one that can only perform pre-approved actions and automatically expires. The original SBT never leaves the owner's wallet. No trust in the renter is required.
+
+GhostPass productionizes the Liquefaction key encumbrance primitive. When a lender lists a privilege:
+
+1. A **dstack TEE enclave** initializes and generates a verifiable attestation (MRENCLAVE + MRSIGNER measurements)
+2. The owner's private key is **encumbered** inside the enclave with time-bound, capability-limited restrictions
+3. A scoped **session key** is issued to the renter — it can only perform pre-approved actions and auto-expires
+4. When the session ends, the TEE **destroys the session key** and releases the encumbrance
+
+The original SBT never leaves the owner's wallet. Neither party trusts the other — the hardware enforces everything.
+
+### Research Foundation
+
+**Liquefaction (Primary Track)** — GhostPass is a direct application of the Liquefaction paper by James Austgen (Cornell/IC3). We implement three core primitives: TEE-based key encumbrance, attestation verification (MRENCLAVE/MRSIGNER proofs), and capability-limited session key derivation.
+
+**Conditional Recall (Secondary Track)** — Our session key mechanism implements brokered credential delegation via TEE, as described in the Conditional Recall research (Xyn Sun, Teleport/Flashbots). The "recall condition" is time-based: when the rental expires, the TEE automatically recalls the delegated session key.
+
+**Bonus Track: Beyond Gaming** — The same TEE key encumbrance primitive extends to researcher/builder collaboration: sharing API keys without exposing secrets, delegating cloud credentials with auto-expiry, time-bound access to proprietary datasets, and team access to premium tools without sharing passwords.
+
+**dstack** is the shared TEE infrastructure layer. The MVP simulates the full dstack enclave flow with realistic artifacts; production deployment will use real dstack enclaves on Intel SGX/TDX.
 
 ### What We Built
 
 **Frontend dApp (Next.js 16 + TypeScript + Tailwind CSS v4)**
-- Full landing page with animated flow visualization, hero section, security model, marketplace preview
+- Full landing page with animated flow visualization, hero section, security model, marketplace preview, "Beyond Gaming" use cases, and IC3 research references
 - 8-page App Router application: Dashboard, Marketplace, Privileges, Sessions, Activity, TEE Dashboard, Settings, Documentation
 - Glassmorphism dark-luxury design system with custom theme variables
 - Fully responsive (sidebar on desktop, bottom nav on mobile)
-- Loading skeletons, 404 page, SEO meta tags, OpenGraph + Twitter cards
+- Loading skeletons, 404 page, SEO meta tags, OpenGraph + Twitter cards, sitemap, robots.txt
 
 **Web3 Integration (Solana Devnet)**
-- Real Solana wallet adapter supporting 6 wallets: Phantom, Solflare, Coinbase Wallet, Trust Wallet, Ledger, Nightly
-- Auto-detection of installed wallets with graceful mock fallback for demo
+- Real Solana wallet adapter supporting Phantom and Solflare with auto-detection
+- Graceful mock fallback for demo mode when no wallet is installed
 - Live SOL balance fetching from Solana devnet (auto-refreshes every 30s)
-- Real wallet address, balance, and provider name displayed throughout the app
+- Real wallet address, balance, and provider name flow through the entire app
 
 **TEE Simulation Engine (Liquefaction Protocol)**
-- Full TEE simulation modeling the complete Liquefaction flow: SBT detection, ownership verification, enclave initialization, attestation generation, key encumbrance, session key issuance, session verification
-- Interactive 7-step rental flow modal with animated progress, live artifact generation (MRENCLAVE hash, encumbrance proof, session key)
-- TEE Dashboard showing live enclave status, attestation logs, active session keys, and key encumbrance records
-- Architecture diagram of the 5-node protocol flow (User Wallet → SBT Registry → Privilege Mapper → Rental Marketplace → TEE Session Controller)
+- Full TEE simulation modeling the complete Liquefaction flow: SBT detection → ownership verification → enclave initialization → attestation generation → key encumbrance → session key issuance → session verification
+- Interactive 7-step rental flow modal with animated progress and live artifact generation (MRENCLAVE hash, encumbrance proof, session key)
+- TEE Dashboard showing live enclave status, on-demand attestation generation, attestation logs, active session keys, and key encumbrance records
+- 5-node protocol architecture diagram (User Wallet → SBT Registry → Privilege Mapper → Rental Marketplace → TEE Session Controller)
+
+**Documentation**
+- In-app docs covering the Liquefaction protocol, dstack infrastructure, Conditional Recall, security model, use cases, and FAQ
+- Comprehensive README with research references, architecture, and setup instructions
 
 ### Tech Stack
 - Next.js 16.1.6 (App Router, Turbopack)
-- TypeScript (0 errors)
-- Tailwind CSS v4 with custom @theme variables
+- TypeScript (0 compilation errors)
+- Tailwind CSS v4 with custom @theme design system
 - @solana/wallet-adapter-react + @solana/web3.js (Devnet)
-- Phantom, Solflare, Coinbase, Trust, Ledger, Nightly wallet adapters
+- Phantom + Solflare wallet adapters with auto-detection
 
 ### Tracks
-- Liquefaction — direct implementation of the Liquefaction protocol (Austgen, Cornell/IC3) for gaming SBT utility leasing
-- NDAI Agreements — non-delegatable attestable identity via SBTs + TEE attestation proofs
+- **Liquefaction** — direct implementation of TEE-based key encumbrance for SBT utility leasing
+- **Conditional Recall** — brokered credential delegation via TEE with time-based automatic recall
+- **Bonus Track** — the same primitive enables trustless credential sharing for researchers, builders, and teams
 
 ---
 
@@ -54,22 +78,26 @@ https://github.com/sage-senpai/ghostpass
 
 ---
 
-## Link to Presentation (copy this)
+## Link to Demo Video (copy this)
 
-https://gamma.app/docs/YOUR-GAMMA-LINK
+[PASTE YOUR YOUTUBE LINK HERE]
 
 ---
 
-## Commit Message (copy this)
+## Link to Presentation (copy this)
+
+[PASTE YOUR GAMMA LINK HERE]
+
+---
+
+## Live Demo Link (copy this)
+
+[PASTE YOUR VERCEL LINK HERE]
+
+---
+
+## Commit Message (for this milestone)
 
 ```
 feat: Milestone 4 — SEO, multi-wallet support, real wallet data flow
-
-- Full SEO: OpenGraph, Twitter cards, meta tags, sitemap.xml, robots.txt
-- 6 wallet adapters: Phantom, Solflare, Coinbase, Trust, Ledger, Nightly
-- Real wallet detection with installed/demo status in connect modal
-- Real wallet data (address, balance, provider name) flows through dashboard, settings, sidebar
-- Loading skeletons, 404 page, page-level metadata
-- Dynamic SSR-safe provider imports (Providers.tsx + ProvidersInner.tsx)
-- TypeScript: 0 errors
 ```
