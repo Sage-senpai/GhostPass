@@ -130,17 +130,17 @@ export default function RentalFlowModal({
   const isRunning = state.step !== "idle" && state.step !== "complete" && state.step !== "error";
 
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 overflow-y-auto">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-bg-dark/80 backdrop-blur-sm" onClick={!isRunning ? onClose : undefined} />
+      <div className="fixed inset-0 bg-bg-dark/80 backdrop-blur-sm" onClick={!isRunning ? onClose : undefined} />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl glass-card p-0 overflow-hidden">
+      <div className="relative w-full max-w-2xl glass-card p-0 overflow-hidden my-auto max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-border/40">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-border/40">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="font-display text-xl font-bold text-paper">
+              <h2 className="font-display text-lg sm:text-xl font-bold text-paper">
                 TEE Rental Flow
               </h2>
               <p className="text-xs text-highlight/50 mt-1 font-mono">
@@ -159,7 +159,7 @@ export default function RentalFlowModal({
         </div>
 
         {/* Privilege Info */}
-        <div className="px-6 py-4 bg-asphalt/30 border-b border-border/20">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-asphalt/30 border-b border-border/20">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <h3 className="text-paper font-semibold">{privilegeName}</h3>
@@ -180,7 +180,7 @@ export default function RentalFlowModal({
 
         {/* Progress Bar */}
         {state.step !== "idle" && (
-          <div className="px-6 pt-4">
+          <div className="px-4 sm:px-6 pt-3 sm:pt-4">
             <div className="h-1.5 bg-border/30 rounded-full overflow-hidden">
               <div
                 className="h-full bg-positive rounded-full transition-all duration-500 ease-out"
@@ -191,9 +191,9 @@ export default function RentalFlowModal({
         )}
 
         {/* Steps */}
-        <div className="px-6 py-5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5">
           {state.step === "idle" ? (
-            <div className="text-center py-8">
+            <div className="text-center py-6 sm:py-8">
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-positive/10 border border-positive/30 flex items-center justify-center">
                 <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
                   <path d="M24 4L6 12v12c0 11.1 7.7 21.5 18 24 10.3-2.5 18-12.9 18-24V12L24 4z" stroke="var(--color-positive)" strokeWidth="2" fill="none" />
@@ -215,7 +215,7 @@ export default function RentalFlowModal({
               </button>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               {RENTAL_STEPS.map((step, idx) => {
                 const isActive = idx === currentStepIndex;
                 const isComplete = idx < currentStepIndex || state.step === "complete";
@@ -224,14 +224,14 @@ export default function RentalFlowModal({
                 return (
                   <div
                     key={step.step}
-                    className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-300 ${
+                    className={`flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-xl transition-all duration-300 ${
                       isActive ? "bg-positive/5 border border-positive/20" :
                       isComplete ? "opacity-70" :
                       "opacity-30"
                     }`}
                   >
                     {/* Status icon */}
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                    <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
                       isComplete ? "bg-positive/20 text-positive" :
                       isActive ? "bg-positive/10 border border-positive/40" :
                       "bg-border/20 border border-border/30"

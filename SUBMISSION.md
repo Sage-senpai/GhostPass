@@ -86,18 +86,11 @@ https://github.com/sage-senpai/ghostpass
 
 ## Link to Presentation (copy this)
 
-[PASTE YOUR GAMMA LINK HERE]
+(https://gamma.app/docs/GhostPass-htzz14er8o6vmpy)
 
 ---
 
 ## Live Demo Link (copy this)
 
-[PASTE YOUR VERCEL LINK HERE]
+https://ghost-pass-two.vercel.app
 
----
-
-## Commit Message (for this milestone)
-
-```
-feat: Milestone 4 — SEO, multi-wallet support, real wallet data flow
-```

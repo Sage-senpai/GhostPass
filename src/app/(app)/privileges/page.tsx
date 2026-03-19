@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { privileges } from "@/lib/mock-data";
+import { useToast } from "@/components/ui/Toast";
+import RentalFlowModal from "@/components/tee/RentalFlowModal";
 
 const myPrivileges = privileges.slice(0, 3);
 
@@ -19,10 +21,23 @@ const rarityLabel: Record<string, string> = {
   common: "Common",
 };
 
+const durationHoursMap: Record<string, number> = { "1h": 1, "3h": 3, "24h": 24 };
+
 export default function PrivilegesPage() {
+  const { toast } = useToast();
   const [listingId, setListingId] = useState<string | null>(null);
   const [duration, setDuration] = useState<"1h" | "3h" | "24h">("3h");
   const [price, setPrice] = useState("");
+  const [rentalModal, setRentalModal] = useState<{
+    open: boolean;
+    privilegeId: string;
+    privilegeName: string;
+    privilegeType: string;
+    game: string;
+    price: number;
+    duration: string;
+    durationHours: number;
+  } | null>(null);
 
   return (
     <main className="min-h-screen bg-bg-dark px-6 py-12 md:px-16">
@@ -102,7 +117,28 @@ export default function PrivilegesPage() {
                 </div>
 
                 {/* Submit / Cancel */}
-                <button className="btn-primary w-full mt-1">
+                <button
+                  onClick={() => {
+                    const p = parseFloat(price);
+                    if (!p || p <= 0) {
+                      toast("Enter a valid price", "error");
+                      return;
+                    }
+                    setRentalModal({
+                      open: true,
+                      privilegeId: priv.id,
+                      privilegeName: priv.name,
+                      privilegeType: priv.type,
+                      game: priv.game,
+                      price: p,
+                      duration,
+                      durationHours: durationHoursMap[duration],
+                    });
+                    setListingId(null);
+                    setPrice("");
+                  }}
+                  className="btn-primary w-full mt-1"
+                >
                   Activate Secure Session
                 </button>
                 <button
@@ -127,6 +163,22 @@ export default function PrivilegesPage() {
           </div>
         ))}
       </div>
+
+      {rentalModal && (
+        <RentalFlowModal
+          isOpen={rentalModal.open}
+          onClose={() => setRentalModal(null)}
+          privilegeName={rentalModal.privilegeName}
+          privilegeId={rentalModal.privilegeId}
+          privilegeType={rentalModal.privilegeType}
+          game={rentalModal.game}
+          price={rentalModal.price}
+          currency="SOL"
+          duration={rentalModal.duration}
+          durationHours={rentalModal.durationHours}
+          lender="You (Owner)"
+        />
+      )}
     </main>
   );
 }
